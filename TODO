@@ -1,7 +1,7 @@
 -*- org -*-   
 
 * DONE implement xpath custom handlers
-* [8/9] code review (compare C to FFI side by side)
+* [9/9] code review (compare C to FFI side by side)
   - [X] xml/node.rb
   - [X] xml/document.rb
   - [X] xml/node_set.rb
@@ -10,7 +10,7 @@
   - [X] html/document.rb
   - [X] html/entity_lookup.rb
   - [X] reader.rb
-  - [ ] xslt.rb, xslt/stylesheet.rb
+  - [X] xslt.rb, xslt/stylesheet.rb
 * DONE code review of function prototypes
 * [7/7] implement classes:
   - [X] HTML::ElementDescription

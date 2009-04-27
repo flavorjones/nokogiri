@@ -4,7 +4,7 @@ module Nokogiri
 
       attr_accessor :cstruct
 
-      def self.parse_stylesheet_doc document
+      def self.parse_stylesheet_doc(document)
         LibXML.exsltRegisterAll
         ss = LibXML.xsltParseStylesheetDoc(LibXML.xmlCopyDoc(document.cstruct, 1)) # 1 => recursive
 
@@ -13,7 +13,7 @@ module Nokogiri
         obj
       end
 
-      def serialize document
+      def serialize(document)
         buf_ptr = FFI::MemoryPointer.new :pointer
         buf_len = FFI::MemoryPointer.new :int
         LibXML.xsltSaveResultToString(buf_ptr, buf_len, document.cstruct, cstruct)
@@ -21,10 +21,10 @@ module Nokogiri
         buf.pointer.read_string(buf_len.read_int)
       end
 
-      def transform document, params=[]
+      def transform(document, params=[])
         param_arr = FFI::MemoryPointer.new(:pointer, params.length + 1)
         params.each_with_index do |param, j|
-          param_arr[j].put_pointer(0, FFI::MemoryPointer.from_string(param))
+          param_arr[j].put_pointer(0, FFI::MemoryPointer.from_string(param.to_s))
         end
         param_arr[params.length].put_pointer(0,nil)
 
