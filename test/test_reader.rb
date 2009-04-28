@@ -124,8 +124,8 @@ class TestReader < Nokogiri::TestCase
     eoxml
     assert_nil reader.attribute(nil)
     assert_nil reader.attribute('awesome')
-    assert_equal([nil, nil, 'true', nil, 'true', nil, nil],
-                 reader.map { |x| x.attribute('awesome') })
+    assert_equal [nil, nil, 'true', nil, 'true', nil, nil],
+      reader.map { |x| x.attribute('awesome') }
   end
 
   def test_attribute_length
