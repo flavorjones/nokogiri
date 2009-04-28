@@ -69,40 +69,6 @@ class TestMemoryLeak < Nokogiri::TestCase
 
   private
 
-#   if Nokogiri.ffi?
-#     [ ['Node', 'p', nil],
-#       ['CDATA', nil, 'content'],
-#       ['Comment', nil, 'content'],
-#       ['DocumentFragment', nil],
-#       ['EntityReference', nil, 'p'],
-#       ['ProcessingInstruction', nil, 'p', 'content'] ].each do |klass, *args|
-
-#       define_method "test_for_leaked_#{klass}_nodes" do
-#         Nokogiri::LibXML.expects(:xmlAddChild).at_least(10) # more than once shows we're GCing properly
-#         10.times {
-#           xml = Nokogiri::XML("<root></root>")
-#           2.times { Nokogiri::XML.const_get(klass).new(*(args.collect{|arg| arg || xml})) }
-#           GC.start
-#         }
-#         GC.start
-#         GC.start
-#       end
-
-#     end
-
-#     def test_for_leaked_attr_nodes
-#       Nokogiri::LibXML.expects(:xmlFreePropList).at_least(10) # more than once shows we're GCing properly
-#       10.times {
-#         xml = Nokogiri::XML("<root></root>")
-#         2.times { Nokogiri::XML::Attr.new(xml, "p") }
-#         GC.start
-#       }
-#       GC.start
-#       GC.start
-#     end
-
-#   end
-
   def count_object_space_documents
     count = 0
     ObjectSpace.each_object {|j| count += 1 if j.is_a?(Nokogiri::XML::Document) }
