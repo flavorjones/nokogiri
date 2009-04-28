@@ -1,7 +1,5 @@
 $VERBOSE = true
-require 'rubygems'
 require 'test/unit'
-require 'mocha'
 
 %w(../lib ../ext).each do |path|
   $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), path)))
