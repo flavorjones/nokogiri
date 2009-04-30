@@ -21,11 +21,8 @@
   - [X] SAX::PushParser
   - [X] ProcessingInstruction
 * miscellaneous issues
-*** TODO blanks being escaped in output
-    - test/xml/test_unparented_node.rb:58:in `test_write_html_to'
-    - test/xml/test_unparented_node.rb:58:in `test_write_xhtml_to'
-    - test/xml/test_node.rb:153:in `test_write_html_to'
-    - test/xml/test_node.rb:153:in `test_write_xhtml_to'
+*** DONE blanks being escaped in output
+    CLOSED: [2009-04-30 Thu 19:03]
 *** TODO heisenbug:
 test_attribute_roundtrip(TestReader):
 NoMethodError: undefined method `attribute_nodes' for [-617503368]:Array
