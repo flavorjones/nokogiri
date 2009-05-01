@@ -49,11 +49,20 @@ static VALUE reparent_node_with(VALUE node_obj, VALUE other_obj, node_other_func
   VALUE reparented_obj ;
   xmlNodePtr node, other, reparented ;
 
+  if(! rb_funcall(node_obj, rb_intern("is_a?"), 1, cNokogiriXmlNode))
+    rb_raise(rb_eArgError, "node must be a Nokogiri::XML::Node");
+
   Data_Get_Struct(node_obj, xmlNode, node);
   Data_Get_Struct(other_obj, xmlNode, other);
 
   if (node->doc == other->doc) {
     xmlUnlinkNode(node) ;
+    if ( node->type == XML_TEXT_NODE
+         && other->type == XML_TEXT_NODE
+         && is_2_6_16() ) {
+      other->content = xmlStrdup(other->content); // we'd rather leak than segfault.
+    }
+
     if(!(reparented = (*func)(other, node))) {
       rb_raise(rb_eRuntimeError, "Could not reparent node (1)");
     }
