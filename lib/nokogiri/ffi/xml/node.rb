@@ -297,6 +297,8 @@ module Nokogiri
       private
 
       def self.reparent_node_with(node, other, &block)
+        raise(ArgumentError, "node must be a Nokogiri::XML::Node") unless node.is_a?(Nokogiri::XML::Node)
+
         if node.cstruct[:doc] == other.cstruct[:doc]
           LibXML.xmlUnlinkNode(node.cstruct)
           reparented_struct = block.call(node.cstruct, other.cstruct)
@@ -369,3 +371,5 @@ module Nokogiri
     end
   end
 end
+
+class Nokogiri::XML::Element < Nokogiri::XML::Node ; end

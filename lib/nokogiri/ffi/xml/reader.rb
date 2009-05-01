@@ -146,12 +146,33 @@ module Nokogiri
       end
 
       def self.from_memory(buffer, url=nil, encoding=nil, options=0)
+        raise(ArgumentError, "string cannot be nil") if buffer.nil?
         reader_ptr = LibXML.xmlReaderForMemory(buffer, buffer.length, url, encoding, options)
         raise(RuntimeError, "couldn't create a reader") if reader_ptr.null?
 
         reader = allocate
         reader.cstruct = LibXML::XmlTextReader.new(reader_ptr)
-        reader.send(:initialize, url, encoding)
+        reader.send(:initialize, buffer, url, encoding)
+        reader
+      end
+
+      def self.from_io(io, url=nil, encoding=nil, options=0)
+        raise(ArgumentError, "io cannot be nil") if io.nil?
+
+        reader = lambda do |ctx, buffer, len|
+          string = io.read(len)
+          return 0 if string.nil?
+          LibXML.memcpy(buffer, string, string.length)
+          string.length
+        end
+        closer = lambda { |ctx| 0 } # coffee is for closers.
+
+        reader_ptr = LibXML.xmlReaderForIO(reader, closer, nil, url, encoding, options)
+        raise "couldn't create a parser" if reader_ptr.null?
+
+        reader = allocate
+        reader.cstruct = LibXML::XmlTextReader.new(reader_ptr)
+        reader.send(:initialize, io, url, encoding)
         reader
       end
 
